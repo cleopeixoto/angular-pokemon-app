@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'angular-pokemon-app';
+  title = "Angular Pokemon Application";
+
+  constructor( ) {}
 }
