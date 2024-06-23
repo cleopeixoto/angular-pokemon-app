@@ -13,11 +13,10 @@ export class DeckListComponent implements OnInit {
 
   constructor(
     private deckService: DeckService,
-    private cardService: CardService,
   ) { }
 
-  ngOnInit(): void {
-    this.cardService.getAll();
+  ngOnInit() {
+    // await this.cardService.getAll();
   }
 
 }

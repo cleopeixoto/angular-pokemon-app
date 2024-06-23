@@ -12,8 +12,10 @@ export class CardService {
   ) { }
 
   async getAll() {
-    await this.generalService.instance.get('/cards').then((response) => {
-      this.cards = response;
+    const data = await this.generalService.instance.get('/cards').then((response) => {
+      return response.data.data;
     });
+
+    this.cards = data;
   }
 }
