@@ -1,4 +1,9 @@
 @import '../../../styles.scss';
 
-.grid-container {
+::ng-deep {
+    .igx-display-container {
+        igx-grid-row {
+            margin: 10px 0;
+        }
+    }
 }

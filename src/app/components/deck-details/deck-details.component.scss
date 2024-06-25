@@ -5,23 +5,42 @@
 	justify-content: center;
 	gap: 20px;
 	flex-direction: column;
-	
+
+	.deck-title {
+		margin: 0 0 20px;
+		font-size: 25px;
+		font-weight: 500;
+	}
+
 	.deck-form {
-		display: flex;
-		flex-direction: column;
-		padding: 20px;
-		height: fit-content;
-		
+		margin-bottom: 15px;
+
 		@media screen and (min-width: 768px) {
 			max-width: 500px;
 		}
-	}
-	
-	.deck-form {
-		.form-title {
-			margin: 0 0 20px;
-			font-size: 20px;
+
+		mat-error {
+			color: $dark-red;
+			opacity: 90%;
 		}
+		
+		mat-hint, mat-error {
+			font-size: 12px;
+		}
+	}
+
+	.btn {
+		align-self: self-end;
+		margin: 30px 0 10px;
+	}
+
+	.error-notification {
+		background-color: $dark-red;
+		opacity: 50%;
+		color: white;
+		border-radius: 13px;
+		padding: 10px;
+		margin: 10px 0;
 	}
 }
 
@@ -31,10 +50,21 @@
 
 
 ::ng-deep {
-	.disable-editing {
+	.view-only {
 		.mdc-line-ripple {
 			display: none;
 		}
+	}
+
+	.existing-deck {
+		.mat-mdc-form-field-infix {
+			font-size: 25px;
+			font-weight: 500;
+		}	
+	}
+
+	.mat-mdc-form-field-subscript-wrapper {
+		display: none;
 	}
 	
 	.mat-mdc-form-field {
@@ -60,3 +90,13 @@
 		border-bottom-width: 1px !important;
 	}
 }
+
+
+// mat-error {
+// 	color: $dark-red;
+// 	opacity: 90%;
+// }
+
+// mat-hint, mat-error {
+// 	font-size: 12px;
+// }

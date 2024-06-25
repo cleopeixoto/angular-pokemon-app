@@ -1,25 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CardService } from '../../services/card.service';
-import { IgxColumnComponent } from 'igniteui-angular';
+import { IRowSelectionEventArgs, IgxColumnComponent } from 'igniteui-angular';
+import { ICard } from '../../interfaces/ICard';
 
 @Component({
   selector: 'app-cards-grid',
   templateUrl: './cards-grid.component.html',
   styleUrl: './cards-grid.component.scss'
 })
-export class CardsGridComponent {
+export class CardsGridComponent implements OnInit {
+  @Input() selectedCards: any = [];
+  @Input() viewOnly = false;
+  @Output() notifyParent = new EventEmitter<any>();
+
   cards = [];
 
   constructor(
     private cardSrv: CardService,
-  ) {
-    this.cards = this.cardSrv.cards;
+  ) { }
+
+  ngOnInit(): void {
+    if (this.selectedCards.length) {
+      this.cards = this.selectedCards;
+      return;
+    }
+
+    this.cardSrv.cards.subscribe((data) => {
+      this.cards = data;
+    });
   }
 
-  public onColumnInit(column: IgxColumnComponent) {
-    if (column.field === 'id') {
-      // do something
-      // column.formatter = (date => date.toLocaleDateString());
-    }
+  public handleCardsSelection(event: IRowSelectionEventArgs) {
+    this.selectedCards = event.newSelection;
   }
 }

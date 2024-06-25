@@ -1,16 +1,32 @@
 <div class="grid-container">
-	<igx-grid #grid1 [data]="cards"
-		allowFiltering="true"
+	
+	<igx-grid #cardsGrid [data]="cards"
+		primaryKey="id"
+		[allowFiltering]="true"
 		filterMode="excelStyleFilter"
 		rowSelection="multiple"
-		columnSelection="multiple"
-		cellSelection="multiple"
 		displayDensity="comfortable"
-		(columnInit)="onColumnInit($event)">
+		[hideRowSelectors]="viewOnly"
+
+		(rowSelectionChanging)="handleCardsSelection($event)"
+	>
+
+		<igx-grid-toolbar>
+			<igx-grid-toolbar-title>Choose cards to your deck</igx-grid-toolbar-title>
+			<igx-grid-toolbar-actions>
+				<igx-grid-toolbar-pinning />
+				<igx-grid-toolbar-hiding />
+				<igx-grid-toolbar-exporter />
+			</igx-grid-toolbar-actions>
+		</igx-grid-toolbar>
 		
-		<igx-column header="Card name" field="name" [sortable]="true" [hasSummary]="true" />
-		<igx-column header="Supertype" field="supertype" dataType="string" />
+		<igx-column class="image-cell" header="Image" field="images.small" [dataType]="'image'" width="150px"  [sortable]="true" [hasSummary]="true" />
+		<igx-column header="Name" field="name" [sortable]="true" [hasSummary]="true" />
+		<igx-column header="Supertype" field="supertype" dataType="string" [groupable]="true" [sortable]="true" />
+		<igx-column header="Types" field="subtypes" />
+		<igx-column header="Subtypes" field="subtypes" />
+		<igx-column header="Set Series" field="set.series" />		
 		
 		<igx-paginator></igx-paginator>
 	</igx-grid>
-</div>
+</div>	

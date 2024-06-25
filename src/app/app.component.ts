@@ -14,7 +14,10 @@ export class AppComponent {
     private router: Router,
     private cardSrv: CardService
   ) {
-    this.cardSrv.initCards();
+
+    // Requesting all cards when initiating application
+    // This way, when the user enters to manipulate list, it's already fulfilled
+    this.cardSrv.getAll();
   }
 
   goToHome() {

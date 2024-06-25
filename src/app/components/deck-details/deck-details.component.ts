@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeckService } from '../../services/deck.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, Location } from '@angular/common';
-import { CardService } from '../../services/card.service';
 import { ICard } from '../../interfaces/ICard';
 
 @Component({
@@ -21,12 +19,12 @@ export class DeckDetailsComponent implements OnInit {
   deckMode: number;
   currentDeck: any;
 
-  filteredCards: ICard[] = [];
+  selectedCards = [];
 
   displayNotification: boolean | any = false;
   customErrors = {
-    existingDeck: false,
-    invalidForm: false,
+    cardsLimit: false,
+    cardsSameName: false,
   };
 
   deckForm: FormGroup = this.formBuilder.group({
@@ -39,11 +37,8 @@ export class DeckDetailsComponent implements OnInit {
     private router: Router,
     private deckSrv: DeckService,
     private formBuilder: FormBuilder,
-    private cardSrv: CardService,
   ) {
     this.deckMode = this.deckModes.READ; // default option
-
-    this.filteredCards = this.cardSrv.cards;
   }
   ngOnInit(): void {
     const id = this.route.snapshot.params?.['id'];
@@ -75,10 +70,30 @@ export class DeckDetailsComponent implements OnInit {
     }
     
     this.currentDeck = currentDeck;
+    this.selectedCards = this.currentDeck.cards;
 
     this.deckForm.setValue({
       name: currentDeck?.name ?? '',
       cards: currentDeck?.cards ?? [],
+    });
+  }
+
+  
+  /**
+   * Validate selected cards
+   */
+  validateCards(): void  {
+    // Deck must have at least 24 cards and not exceed 60 cards
+    if (this.selectedCards.length < 24 || this.selectedCards.length > 60) this.customErrors.cardsLimit = true;
+    
+    // Deck must have maximum 4 cards with the same name
+    let nameAppears: any = {};
+    this.selectedCards.forEach((card: ICard) => {
+      let nameCount = nameAppears[card.name];
+      if (!nameCount) nameCount = 0;
+      else nameCount ++;
+
+      if (nameCount >= 4) this.customErrors.cardsSameName = true;
     });
   }
 
@@ -100,6 +115,10 @@ export class DeckDetailsComponent implements OnInit {
     }
 
     // Edit deck mode: Send deck to PUT
+    this.validateCards();
+    if (this.hasCustomErrors()) return;
+
+    this.currentDeck.cards = this.selectedCards;
     this.deckSrv.updateDeck(this.deckId, deckData);
     this.goToHome();
   }
@@ -109,11 +128,32 @@ export class DeckDetailsComponent implements OnInit {
    * @param name Given name
    */
   onNameChange(name: string) {
-    const existingDeck = this.deckSrv.decks.find((deck) => deck.name.toUpperCase() === name.toUpperCase());
+    const existingDeck = this.deckSrv.decks.find((deck) => (
+      deck.name.trim().toUpperCase() === name.trim().toUpperCase()
+      && name.trim().toUpperCase() !== this.currentDeck?.name?.trim()?.toUpperCase()
+    ));
 
     // Updating form name control
     if (!existingDeck) delete this.deckForm.controls['name'].errors?.['existingDeck'];
     else this.deckForm.controls['name'].setErrors({ existingDeck: true });
+  }
+
+  /**
+   * Assign selected cards to given event from child cards-grid component
+   * @param cardsEvent Given event
+   */
+  onCardSelectChange(cardsEvent: any) {
+    this.selectedCards = cardsEvent;
+  }
+
+  /**
+   * Check if selected cards has changed
+   */
+  hasCardsChanged(): boolean {
+    const selectedCardsIds = this.selectedCards.map((card: any) => card.id);
+    const currentDeckCardsIds = this.currentDeck.cards.map((card: any) => card.id);
+
+    return JSON.stringify(selectedCardsIds) !== JSON.stringify(currentDeckCardsIds)
   }
 
   /**

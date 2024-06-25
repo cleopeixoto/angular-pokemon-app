@@ -4,56 +4,65 @@
 </a>
 
 <div class="deck-details-container">
-  <div class="deck-form generic-form card">
-    <div class="form-title">
+  @if (deckMode === deckModes.CREATE) {
+    <div class="deck-title">
+      <span>Create a new deck</span>
+    </div>
+  }
+
+  <form [formGroup]="deckForm" class="deck-form" [ngClass]="{'view-only': deckMode === deckModes.READ, 'existing-deck': deckMode !== deckModes.CREATE}">
+    <mat-form-field>
       @if (deckMode === deckModes.CREATE) {
-        <span>New deck</span>
-      } @else {
-        <span>Deck information</span>
+        <mat-label>Deck name</mat-label>
+      }
+
+      <input matInput type="text" formControlName="name" [max]="200" required 
+      [readonly]="deckMode === deckModes.READ"
+      (ngModelChange)="onNameChange($event)" />
+
+      @if (!deckForm.controls['name'].value) { 
+        <mat-error>Name is required</mat-error>
+      }
+      @if (deckForm.controls['name'].hasError('existingDeck')) { 
+        <mat-error>Name already exists</mat-error>
+      }
+    </mat-form-field>
+  </form>
+
+  <app-cards-grid 
+    [selectedCards]="selectedCards"
+    [viewOnly]="deckMode === deckModes.READ"
+    (notifyParent)="onCardSelectChange($event)"
+  />
+
+  @if ([deckModes.CREATE, deckModes.UPDATE].includes(deckMode)) {
+    @if (deckMode === deckModes.CREATE) {
+      <button type="submit" class="btn primary-btn" 
+        [disabled]="deckForm.invalid || hasCustomErrors()"
+        (click)="onSubmit()"
+        >
+        <span>Create</span>
+      </button>
+    }
+    @else if (deckMode === deckModes.UPDATE) {
+      <button type="submit" class="btn primary-btn"
+        [disabled]="deckForm.invalid || hasCustomErrors() || (deckForm.untouched && !hasCardsChanged())"
+        (click)="onSubmit()"
+        >
+        <i class="fa fa-floppy-o"></i>
+        <span>Save</span>
+      </button>
+    }
+  }
+
+  @if (customErrors.cardsLimit || customErrors.cardsSameName) {
+    <div class="error-notification">
+      @if (customErrors.cardsLimit) {
+        <mat-error>A deck must have between 24 and 60 cards.</mat-error>
+      }
+      @else if (customErrors.cardsSameName) {
+        <mat-error>You cannot select more than 4 cards with the same name.</mat-error>
       }
     </div>
-    
-    <form [formGroup]="deckForm" [ngClass]="{'disable-editing': deckMode === deckModes.READ}">
-      <div class="input-group">
-        <mat-form-field>
-          <mat-label>Name</mat-label>
-          <input matInput type="text" formControlName="name" [max]="200" required 
-          [readonly]="deckMode === deckModes.READ"
-          (ngModelChange)="onNameChange($event)">
-          @if (!deckForm.controls['name'].value) { <mat-error>Name is required</mat-error> }
-          @if (deckForm.controls['name'].hasError('existingDeck')) { <mat-error>Name already exists</mat-error> }
-          
-        </mat-form-field>
-      </div>
-  
-      @if ([deckModes.CREATE, deckModes.UPDATE].includes(deckMode)) {
-        <div class="form-footer">
-          <div class="buttons">
-            @if (deckMode === deckModes.CREATE) {
-              <button type="submit" class="btn primary-btn" 
-                [disabled]="deckForm.invalid || hasCustomErrors()"
-                (click)="onSubmit()"
-                >
-                <span>Create</span>
-              </button>
-            }
-    
-            @else if (deckMode === deckModes.UPDATE) {
-              <button type="submit" class="btn primary-btn"
-                [disabled]="deckForm.invalid || hasCustomErrors() || (deckMode === deckModes.UPDATE && deckForm.untouched)"
-                (click)="onSubmit()"
-                >
-                <i class="fa fa-floppy-o"></i>
-                <span>Save</span>
-              </button>
-            }
-          </div>
-        </div>
-      }
-    </form>
-  </div>
-
-  @if (true) {
-    <app-cards-grid></app-cards-grid>
   }
 </div>
