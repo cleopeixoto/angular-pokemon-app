@@ -18,8 +18,9 @@ export class DeckDetailsComponent implements OnInit {
   }
   deckMode: number;
   currentDeck: any;
-
+  hasCardsChanged = false;
   selectedCards = [];
+  cardsLoading = false;
 
   displayNotification: boolean | any = false;
   customErrors = {
@@ -29,7 +30,6 @@ export class DeckDetailsComponent implements OnInit {
 
   deckForm: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required, Validators.maxLength(200)]],
-    cards: [[]],
   });
 
   constructor(
@@ -74,7 +74,6 @@ export class DeckDetailsComponent implements OnInit {
 
     this.deckForm.setValue({
       name: currentDeck?.name ?? '',
-      cards: currentDeck?.cards ?? [],
     });
   }
 
@@ -104,7 +103,10 @@ export class DeckDetailsComponent implements OnInit {
     if (!this.deckForm.valid) return;
 
     // Get deck form data
-    const deckData = this.deckForm.value;
+    const deckData = {
+      name: this.deckForm.controls['name'].value,
+      cards: this.selectedCards
+    }
 
     // Create new deck: send deck data to POST
     if (this.deckMode === this.deckModes.CREATE) {
@@ -118,8 +120,8 @@ export class DeckDetailsComponent implements OnInit {
     this.validateCards();
     if (this.hasCustomErrors()) return;
 
-    this.currentDeck.cards = this.selectedCards;
-    this.deckSrv.updateDeck(this.deckId, deckData);
+    
+    this.currentDeck = this.deckSrv.updateDeck(this.deckId, deckData);
     this.goToHome();
   }
 
@@ -139,21 +141,28 @@ export class DeckDetailsComponent implements OnInit {
   }
 
   /**
-   * Assign selected cards to given event from child cards-grid component
-   * @param cardsEvent Given event
+   * Assign selected cards to given cards from child cards-grid component
+   * @param cards Given cards
    */
-  onCardSelectChange(cardsEvent: any) {
-    this.selectedCards = cardsEvent;
+  onCardSelectChange(cards: any) {
+    this.selectedCards = cards;
+
+    // Clear errors on change
+    this.customErrors.cardsLimit = false;
+    this.customErrors.cardsSameName = false;
+
+    // Check if user has changed selected cards
+    this.hasCardsChanged = this.hasChanged();
   }
 
   /**
    * Check if selected cards has changed
    */
-  hasCardsChanged(): boolean {
+  hasChanged(): boolean {
     const selectedCardsIds = this.selectedCards.map((card: any) => card.id);
     const currentDeckCardsIds = this.currentDeck.cards.map((card: any) => card.id);
 
-    return JSON.stringify(selectedCardsIds) !== JSON.stringify(currentDeckCardsIds)
+    return JSON.stringify(selectedCardsIds) !== JSON.stringify(currentDeckCardsIds);
   }
 
   /**

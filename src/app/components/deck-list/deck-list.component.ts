@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DeckService } from '../../services/deck.service';
-import { CardService } from '../../services/card.service';
 import { IDeck } from '../../interfaces/IDeck';
 import { Router } from '@angular/router';
 

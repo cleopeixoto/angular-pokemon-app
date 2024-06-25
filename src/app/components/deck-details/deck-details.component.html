@@ -19,21 +19,40 @@
       <input matInput type="text" formControlName="name" [max]="200" required 
       [readonly]="deckMode === deckModes.READ"
       (ngModelChange)="onNameChange($event)" />
-
-      @if (!deckForm.controls['name'].value) { 
-        <mat-error>Name is required</mat-error>
-      }
-      @if (deckForm.controls['name'].hasError('existingDeck')) { 
-        <mat-error>Name already exists</mat-error>
-      }
     </mat-form-field>
+
+    @if (!deckForm.controls['name'].value) { 
+      <mat-error>Name is required</mat-error>
+    }
+    @if (deckForm.controls['name'].hasError('existingDeck')) { 
+      <mat-error>Name already exists</mat-error>
+    }
   </form>
 
-  <app-cards-grid 
-    [selectedCards]="selectedCards"
-    [viewOnly]="deckMode === deckModes.READ"
-    (notifyParent)="onCardSelectChange($event)"
-  />
+  <!-- Todo: Implement a loading message -->
+  @if (deckMode === deckModes.READ && !currentDeck.cards.length) {
+    <span>This deck has no cards.</span>
+  }
+  @else {
+    <app-cards-grid 
+      [selectedCards]="selectedCards"
+      [viewOnly]="deckMode === deckModes.READ"
+      (notifyParent)="onCardSelectChange($event)"
+    />
+  }
+
+  @if (customErrors.cardsLimit || customErrors.cardsSameName) {
+    <div class="error-notification">
+      <i class="fa fa-info fa-icon"></i>
+
+      @if (customErrors.cardsLimit) {
+        <mat-error>A deck must have between 24 and 60 cards.</mat-error>
+      }
+      @else if (customErrors.cardsSameName) {
+        <mat-error>You cannot select more than 4 cards with the same name.</mat-error>
+      }
+    </div>
+  }
 
   @if ([deckModes.CREATE, deckModes.UPDATE].includes(deckMode)) {
     @if (deckMode === deckModes.CREATE) {
@@ -46,23 +65,12 @@
     }
     @else if (deckMode === deckModes.UPDATE) {
       <button type="submit" class="btn primary-btn"
-        [disabled]="deckForm.invalid || hasCustomErrors() || (deckForm.untouched && !hasCardsChanged())"
+        [disabled]="deckForm.invalid || (deckForm.untouched && !hasCardsChanged)"
         (click)="onSubmit()"
         >
         <i class="fa fa-floppy-o"></i>
         <span>Save</span>
       </button>
     }
-  }
-
-  @if (customErrors.cardsLimit || customErrors.cardsSameName) {
-    <div class="error-notification">
-      @if (customErrors.cardsLimit) {
-        <mat-error>A deck must have between 24 and 60 cards.</mat-error>
-      }
-      @else if (customErrors.cardsSameName) {
-        <mat-error>You cannot select more than 4 cards with the same name.</mat-error>
-      }
-    </div>
   }
 </div>
