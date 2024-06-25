@@ -9,6 +9,11 @@
     height: 50px;
     align-items: center;
 
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+
     .home {
       margin: 0 15px 0;
       padding: 15px;
@@ -26,7 +31,7 @@
   }
 
   .app-content {
-    margin: 50px 40px;
+    margin: 80px 40px;
   }
 
   .app-footer {
@@ -35,5 +40,6 @@
     position: fixed;
     height: 50px;
     background-color: #404040;
+    z-index: 1;
   }
 }

@@ -1,0 +1,62 @@
+@import "../../../styles.scss";
+
+.deck-details-container {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	flex-direction: column;
+	
+	.deck-form {
+		display: flex;
+		flex-direction: column;
+		padding: 20px;
+		height: fit-content;
+		
+		@media screen and (min-width: 768px) {
+			max-width: 500px;
+		}
+	}
+	
+	.deck-form {
+		.form-title {
+			margin: 0 0 20px;
+			font-size: 20px;
+		}
+	}
+}
+
+.form-control:focus{
+	box-shadow: none;
+}
+
+
+::ng-deep {
+	.disable-editing {
+		.mdc-line-ripple {
+			display: none;
+		}
+	}
+	
+	.mat-mdc-form-field {
+		padding: 0 !important;
+	}
+	
+	.mat-mdc-text-field-wrapper,
+	.mat-mdc-form-field-hint-wrapper,
+	.mat-mdc-form-field-error-wrapper {
+		padding: 0 0 0 5px !important;
+	}
+	
+	.mat-mdc-form-field-flex {
+		margin-top: 25px !important;
+		padding-bottom: 6px;
+	}
+	
+	.mat-mdc-floating-label {
+		margin-top: 5px !important;
+	}
+	
+	.mdc-line-ripple::before {
+		border-bottom-width: 1px !important;
+	}
+}

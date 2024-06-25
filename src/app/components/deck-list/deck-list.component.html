@@ -1,1 +1,25 @@
-<p>deck-list works!</p>
+<div class="deck-container">
+	<button class="btn primary-btn new-btn" routerLink="/deck/new">New Deck</button>
+	
+	<div class="deck-list">
+		@for (deck of decks; track deck; let i = $index) {
+			<div class="card-column" [ngClass]="{'last': i === decks.length - 1}">
+				<div class="card">
+					<div class="deck-header">
+						<span class="deck-name">{{ deck.name }}</span>
+						
+						<div class="deck-actions">
+							<i class="fa fa-eye fa-icon" (click)="goToDeckDetails(deck.id, 'view')"></i>
+							<i class="fa fa-edit fa-icon" (click)="goToDeckDetails(deck.id, 'edit')"></i>
+							<i class="fa fa-trash fa-icon" (click)="confirmDelete(deck.id)"></i>
+						</div>
+					</div>
+
+					<span class="cards-qty">Cards quantity: {{ deck.cards.length }}</span>
+				</div>
+			</div>
+		}
+	</div>
+	
+	<span class="decks-qty">Quantity of decks: {{ decks.length }}</span>
+</div>

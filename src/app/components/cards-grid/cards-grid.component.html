@@ -1,0 +1,16 @@
+<div class="grid-container">
+	<igx-grid #grid1 [data]="cards"
+		allowFiltering="true"
+		filterMode="excelStyleFilter"
+		rowSelection="multiple"
+		columnSelection="multiple"
+		cellSelection="multiple"
+		displayDensity="comfortable"
+		(columnInit)="onColumnInit($event)">
+		
+		<igx-column header="Card name" field="name" [sortable]="true" [hasSummary]="true" />
+		<igx-column header="Supertype" field="supertype" dataType="string" />
+		
+		<igx-paginator></igx-paginator>
+	</igx-grid>
+</div>

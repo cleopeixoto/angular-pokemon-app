@@ -1,0 +1,85 @@
+@import '../../../styles.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+.deck-container {
+	display: flex;
+	flex-direction: column;
+	
+	.btn {
+		align-self: flex-end;
+		margin: 15px;
+	}
+	
+	.deck-list {
+		display: flex;
+		width: 100%;
+		flex-wrap: wrap;
+
+		&:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
+		.card-column {
+			margin: 10px 0;
+			float: left;
+			width: 25%;
+			padding: 0 15px;
+
+			// Vertical line: one card per row
+			@media screen and (max-width: 768px) {
+				width: 100%;
+				display: block;
+				margin-bottom: 20px;
+			}
+
+			.card {
+				height: 150px;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				box-shadow: 0 3px 6px $gray4 !important;
+
+				&:hover {
+					background-color: $gray5;
+				}
+
+				.deck-header {
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: center;
+
+					.deck-name {
+						font-size: 25px;
+						font-weight: 500;
+						letter-spacing: 1px;
+					}
+
+					.deck-actions {
+						.fa-icon:hover {
+							background-color: rgba(255, 0, 0, 0.3);
+							border-radius: 8px;
+							cursor: pointer;
+						}
+					}
+				}
+
+				.cards-qty {
+					font-size: 16px;
+					font-weight: 400;
+				}
+			}
+		}
+	}
+
+	.decks-qty {
+		padding: 15px;
+		font-weight: 500;
+		align-self: end;
+	}
+}

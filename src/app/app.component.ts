@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { CardService } from './services/card.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [RouterOutlet],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = "Angular Pokemon Application";
 
   constructor(
+    private router: Router,
     private cardSrv: CardService
   ) {
-    // this.cardSrv.getAll();
+    this.cardSrv.initCards();
+  }
+
+  goToHome() {
+    this.router.navigate(['/home']).then();
   }
 }

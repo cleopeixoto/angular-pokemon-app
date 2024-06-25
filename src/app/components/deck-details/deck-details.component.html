@@ -1,0 +1,59 @@
+<a class="back-link" (click)="onCancel()">
+  <i class="fa fa-rotate-left"></i>
+  <span>Back</span>
+</a>
+
+<div class="deck-details-container">
+  <div class="deck-form generic-form card">
+    <div class="form-title">
+      @if (deckMode === deckModes.CREATE) {
+        <span>New deck</span>
+      } @else {
+        <span>Deck information</span>
+      }
+    </div>
+    
+    <form [formGroup]="deckForm" [ngClass]="{'disable-editing': deckMode === deckModes.READ}">
+      <div class="input-group">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name" [max]="200" required 
+          [readonly]="deckMode === deckModes.READ"
+          (ngModelChange)="onNameChange($event)">
+          @if (!deckForm.controls['name'].value) { <mat-error>Name is required</mat-error> }
+          @if (deckForm.controls['name'].hasError('existingDeck')) { <mat-error>Name already exists</mat-error> }
+          
+        </mat-form-field>
+      </div>
+  
+      @if ([deckModes.CREATE, deckModes.UPDATE].includes(deckMode)) {
+        <div class="form-footer">
+          <div class="buttons">
+            @if (deckMode === deckModes.CREATE) {
+              <button type="submit" class="btn primary-btn" 
+                [disabled]="deckForm.invalid || hasCustomErrors()"
+                (click)="onSubmit()"
+                >
+                <span>Create</span>
+              </button>
+            }
+    
+            @else if (deckMode === deckModes.UPDATE) {
+              <button type="submit" class="btn primary-btn"
+                [disabled]="deckForm.invalid || hasCustomErrors() || (deckMode === deckModes.UPDATE && deckForm.untouched)"
+                (click)="onSubmit()"
+                >
+                <i class="fa fa-floppy-o"></i>
+                <span>Save</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </form>
+  </div>
+
+  @if (true) {
+    <app-cards-grid></app-cards-grid>
+  }
+</div>
