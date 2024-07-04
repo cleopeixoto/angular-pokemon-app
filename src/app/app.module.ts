@@ -34,6 +34,7 @@ import { AppComponent } from './app.component';
 import { DeckDetailsComponent } from './components/deck-details/deck-details.component';
 import { DeckListComponent } from './components/deck-list/deck-list.component';
 import { CardsGridComponent } from './components/cards-grid/cards-grid.component';
+import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(ptBr);
 @NgModule({
@@ -43,6 +44,7 @@ registerLocaleData(ptBr);
 		BrowserModule,
 		ReactiveFormsModule,
 		BrowserAnimationsModule,
+		HttpClientModule,
 		MatFormFieldModule,
 		MatInputModule,
 		MatIconModule,
@@ -65,7 +67,7 @@ registerLocaleData(ptBr);
 		AppComponent,
 		DeckListComponent,
 		DeckDetailsComponent,
-  CardsGridComponent,
+  	CardsGridComponent,
 	],
 	bootstrap: [AppComponent],
 	providers: [

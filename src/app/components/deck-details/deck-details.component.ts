@@ -152,7 +152,7 @@ export class DeckDetailsComponent implements OnInit {
     this.customErrors.cardsSameName = false;
 
     // Check if user has changed selected cards
-    this.hasCardsChanged = this.hasChanged();
+    if (this.deckMode !== this.deckModes.CREATE) this.hasCardsChanged = this.hasChanged();
   }
 
   /**

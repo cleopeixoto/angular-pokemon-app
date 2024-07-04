@@ -1,32 +1,37 @@
 <div class="grid-container">
-	
-	<igx-grid #cardsGrid [data]="cards"
-		primaryKey="id"
-		[allowFiltering]="true"
-		filterMode="excelStyleFilter"
-		rowSelection="multiple"
-		displayDensity="comfortable"
-		[hideRowSelectors]="viewOnly"
+	@defer (on viewport) {
+		<igx-grid #cardsGrid [data]="cards"
+			primaryKey="id"
+			[allowFiltering]="true"
+			filterMode="excelStyleFilter"
+			rowSelection="multiple"
+			displayDensity="comfortable"
+			[hideRowSelectors]="viewOnly()"
 
-		(rowSelectionChanging)="handleCardsSelection($event)"
-	>
+			(rowSelectionChanging)="handleCardsSelection($event)"
+		>
 
-		<igx-grid-toolbar>
-			<igx-grid-toolbar-title>Choose cards to your deck</igx-grid-toolbar-title>
-			<igx-grid-toolbar-actions>
-				<igx-grid-toolbar-pinning />
-				<igx-grid-toolbar-hiding />
-				<igx-grid-toolbar-exporter />
-			</igx-grid-toolbar-actions>
-		</igx-grid-toolbar>
-		
-		<igx-column class="image-cell" header="Image" field="images.small" [dataType]="'image'" width="150px"  [sortable]="true" [hasSummary]="true" />
-		<igx-column header="Name" field="name" [sortable]="true" [hasSummary]="true" />
-		<igx-column header="Supertype" field="supertype" dataType="string" [groupable]="true" [sortable]="true" />
-		<igx-column header="Types" field="subtypes" />
-		<igx-column header="Subtypes" field="subtypes" />
-		<igx-column header="Set Series" field="set.series" />		
-		
-		<igx-paginator></igx-paginator>
-	</igx-grid>
+			<igx-grid-toolbar>
+				<igx-grid-toolbar-title>Choose cards to your deck</igx-grid-toolbar-title>
+				<igx-grid-toolbar-actions>
+					<igx-grid-toolbar-pinning />
+					<igx-grid-toolbar-hiding />
+					<igx-grid-toolbar-exporter />
+				</igx-grid-toolbar-actions>
+			</igx-grid-toolbar>
+			
+			<igx-column class="image-cell" header="Image" field="images.small" [dataType]="'image'" width="150px"  [sortable]="true" [hasSummary]="true" />
+			<igx-column header="Name" field="name" [sortable]="true" [hasSummary]="true" />
+			<igx-column header="Supertype" field="supertype" dataType="string" [groupable]="true" [sortable]="true" />
+			<igx-column header="Types" field="subtypes" />
+			<igx-column header="Subtypes" field="subtypes" />
+			<igx-column header="Set Series" field="set.series" />		
+			
+			<igx-paginator></igx-paginator>
+		</igx-grid>
+	} @placeholder {
+
+		<!-- A placeholder content to show until the comments load -->
+		<i class="fa fa-spinner fa-spin"></i>
+	}
 </div>	

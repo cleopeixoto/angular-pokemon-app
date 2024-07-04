@@ -1,5 +1,18 @@
 @import '../../../styles.scss';
 
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .fa-spinner {
+        font-size: 50px;
+        color: $dark-red;
+        margin-top: 50px;
+        width: fit-content;
+    }
+}
+
 ::ng-deep {
     .igx-display-container {
         igx-grid-row {

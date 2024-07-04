@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeneralService {
-  instance;
+  headers;
 
   constructor() {
-    this.instance = axios.create({
-      baseURL: environment.pokemonApiUrl,
-      headers: {
-        "X-Api-Key": environment.pokemonApiKey
-      }
+    this.headers = new HttpHeaders({
+      'X-Api-Key': environment.pokemonApiKey
     });
   }
 }

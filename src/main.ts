@@ -6,4 +6,5 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 platformBrowserDynamic().bootstrapModule(AppModule, {
   providers: [provideAnimations()],
 })
-  .catch((err) => console.log(err));
+  .catch((err) => console.error(err));
+  
