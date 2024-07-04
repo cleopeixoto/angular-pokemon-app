@@ -1,11 +1,13 @@
-<div class="app-container">
-  <nav class="menu">
-    <a (click)="goToHome()" class="home">Home</a>
+<div class="relative">
+  <nav class="bg-dark-red flex flex-row justify-end items-center h-14 fixed top-0 right-0 w-full z-[2]">
+    <a (click)="goToHome()"
+    class="hover:bg-rose-400 text-white text-base mx-4 my-0 p-4 font-medium uppercase no-underline tracking-0.5"
+    >Home</a>
   </nav>
 
-  <div class="app-content">
+  <div class="my-20 mx-10">
     <router-outlet />
   </div>
 
-  <div class="app-footer"></div>
+  <div class="w-full fixed bottom-0 h-14 z-[1] bg-[#404040]"></div>
 </div>
